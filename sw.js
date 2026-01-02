@@ -12,7 +12,9 @@ const assets = [
   './quiz8.html',
   './quiz9.html',
   './quiz10.html',
-  './assets/logo-192.png'
+  '.logo-192.png',
+'./curiosidades.html'
+
 ];
 
 self.addEventListener('install', event => {
