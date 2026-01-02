@@ -131,8 +131,15 @@
     function proximaPergunta() {
         indice++;
         if(indice < perguntas.length) carregar();
-        else document.getElementById("pergunta-box").innerHTML = "<h2>Jornada Concluída!</h2><a href='index.html' class='btn-opcao'>Voltar ao Início</a>";
-    }
+     else {
+    document.getElementById("pergunta-box").innerHTML = `
+        <h2>Jornada Concluída!</h2>
+        <a href="index.html" class="btn-opcao" style="text-decoration:none; display:block; margin-bottom:10px;">Voltar ao Início</a>
+        <a href="quiz2.html" style="text-decoration:none;">
+            <button class="btn-proxima" style="background-color:#28a745; color:white; border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold;">PRÓXIMA PERGUNTA</button>
+        </a>`;
+}
+
 
     carregar();
 </script>
