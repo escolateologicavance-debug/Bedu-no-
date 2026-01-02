@@ -105,11 +105,28 @@
             box.appendChild(b);
         });
     }
-    function proximaPergunta() {
+   function proximaPergunta() {
         indice++;
-        if(indice < perguntas.length) carregar();
-        else document.getElementById("pergunta-box").innerHTML = "<h2>Fim do Nível 5!</h2><p>Você é um explorador fiel.</p><a href='index.html' class='btn-opcao' style='text-decoration:none'>Voltar ao Início</a>";
+        if (indice < perguntas.length) {
+            carregar();
+        } else {
+            // 1. Esconde o botão verde que fica embaixo da caixa
+            document.getElementById("btn-proxima").style.display = "none";
+            
+            // 2. Substitui o conteúdo da caixa pelo link do próximo quiz
+            document.getElementById("pergunta-box").innerHTML = `
+                <h2 style="color:#d4a373;">Etapa Concluída!</h2>
+                <p>Seu conhecimento está sendo qualificado.</p>
+                <a href="quiz6.html" class="btn-opcao" style="text-decoration:none; display:block; background-color:#5cb85c; color:white; padding:15px; border-radius:12px; font-weight:bold; margin-top:20px;">
+                    IR PARA O QUIZ 6
+                </a>
+                <a href="index.html" style="text-decoration:none; display:block; margin-top:15px; color:#d4a373; font-weight:bold;">
+                    Voltar ao Início
+                </a>
+            `;
+        }
     }
+
     carregar();
 </script>
 </body>
