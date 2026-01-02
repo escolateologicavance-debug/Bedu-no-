@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beduíno - Quiz 9</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%);
+            color: #f0ead6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .logo-top { width: 120px; margin-bottom: 20px; }
+        h2 { color: #d4a373; font-size: 1.4em; margin-bottom: 25px; }
+        .btn-opcao {
+            display: block; width: 100%; padding: 15px; margin: 12px 0;
+            background-color: #d4a373; color: #1e3f34; border: none;
+            border-radius: 12px; font-size: 1.1em; font-weight: bold; cursor: pointer;
+        }
+        .btn-opcao:hover { background-color: #e6b885; }
+        .feedback { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
+        #btn-proxima {
+            background-color: #5cb85c; color: white; padding: 15px;
+            border: none; border-radius: 12px; width: 100%;
+            margin-top: 20px; display: none; cursor: pointer; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <img src="logo-192.png" alt="Beduíno" class="logo-top">
+    
+    <div id="pergunta-box">
+        <h2 id="texto-pergunta">Carregando lugares e caminhos...</h2>
+        <div id="opcoes-box"></div>
+        <div id="feedback" class="feedback"></div>
+    </div>
+    <button id="btn-proxima" onclick="proximaPergunta()">PRÓXIMA PERGUNTA</button>
+</div>
+
+<script>
+    const perguntas = [
+        { q: "Onde Moisés viu a sarça ardente?", o: ["Monte Sinai", "Monte Horebe", "Monte Carmelo"], r: "Monte Horebe" },
+        { q: "Qual cidade era conhecida como a 'Cidade das Palmeiras'?", o: ["Jericó", "Belém", "Gaza"], r: "Jericó" },
+        { q: "Em que rio Jesus foi batizado?", o: ["Rio Nilo", "Rio Eufrates", "Rio Jordão"], r: "Rio Jordão" },
+        { q: "Para qual cidade Jonas tentou fugir antes de ir para Nínive?", o: ["Tarsis", "Jope", "Damasco"], r: "Tarsis" },
+        { q: "Onde Deus confundiu as línguas dos homens?", o: ["Babilônia", "Torre de Babel", "Nínive"], r: "Torre de Babel" },
+        { q: "Qual o nome do monte onde o templo de Salomão foi construído?", o: ["Monte das Oliveiras", "Monte Moriá", "Monte Sinai"], r: "Monte Moriá" },
+        { q: "Em que cidade Jesus transformou água em vinho?", o: ["Nazaré", "Caná da Galileia", "Cafarnaum"], r: "Caná da Galileia" },
+        { q: "Onde os discípulos estavam quando receberam o Espírito Santo no Pentecostes?", o: ["No Templo", "Num cenáculo em Jerusalém", "Na beira do mar"], r: "Num cenáculo em Jerusalém" },
+        { q: "Para onde a família de Jesus fugiu para escapar de Herodes?", o: ["Egito", "Síria", "Moabe"], r: "Egito" },
+        { q: "Qual cidade tinha muros tão largos que havia casas sobre eles?", o: ["Jericó", "Babilônia", "Tiro"], r: "Jericó" },
+        { q: "Onde Jesus foi transfigurado diante de Pedro, Tiago e João?", o: ["Monte Tabor", "Monte Hermom", "Um alto monte"], r: "Um alto monte" },
+        { q: "Em que cidade Paulo nasceu?", o: ["Tarso", "Roma", "Éfeso"], r: "Tarso" },
+        { q: "Qual o nome do vale onde Davi enfrentou Golias?", o: ["Vale de Escol", "Vale de Elá", "Vale de Josafá"], r: "Vale de Elá" },
+        { q: "Onde os israelitas atravessaram o mar a pé enxuto?", o: ["Mar Vermelho", "Mar da Galileia", "Mar Morto"], r: "Mar Vermelho" },
+        { q: "Em qual cidade os muros caíram após sete dias de marcha?", o: ["Sodoma", "Jericó", "Ai"], r: "Jericó" },
+        { q: "Onde ficava a casa de Maria, Marta e Lázaro?", o: ["Betânia", "Emaús", "Jericó"], r: "Betânia" },
+        { q: "Qual o nome do jardim onde Jesus foi preso?", o: ["Éden", "Getsêmani", "Nabote"], r: "Getsêmani" },
+        { q: "De qual cidade era o gigante Golias?", o: ["Gade", "Gate", "Gibeão"], r: "Gate" },
+        { q: "Para onde os dois discípulos caminhavam quando Jesus apareceu a eles após a ressurreição?", o: ["Emaús", "Jope", "Gaza"], r: "Emaús" },
+        { q: "Qual ilha João estava quando escreveu o Apocalipse?", o: ["Chipre", "Malta", "Patmos"], r: "Patmos" }
+    ];
+
+    let indice = 0;
+    function carregar() {
+        const item = perguntas[indice];
+        document.getElementById("texto-pergunta").innerText = item.q;
+        const box = document.getElementById("opcoes-box");
+        box.innerHTML = "";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("btn-proxima").style.display = "none";
+        item.o.forEach(opt => {
+            const b = document.createElement("button");
+            b.innerText = opt; b.className = "btn-opcao";
+            b.onclick = () => {
+                const btns = document.querySelectorAll(".btn-opcao");
+                btns.forEach(btn => btn.disabled = true);
+                if(opt === item.r) { 
+                    b.style.background = "#5cb85c"; 
+                    document.getElementById("feedback").innerText = "Correto! Conhecendo os caminhos bíblicos."; 
+                }
+                else { 
+                    b.style.background = "#d9534f"; 
+                    document.getElementById("feedback").innerText = "Resposta: " + item.r; 
+                }
+                document.getElementById("btn-proxima").style.display = "block";
+            };
+            box.appendChild(b);
+        });
+    }
+    function proximaPergunta() {
+        indice++;
+        if(indice < perguntas.length) carregar();
+        else document.getElementById("pergunta-box").innerHTML = "<h2>Nível 9 Concluído!</h2><p>Você mapeou bem as Escrituras.</p><a href='index.html' class='btn-opcao' style='text-decoration:none'>Voltar ao Início</a>";
+    }
+    carregar();
+</script>
+</body>
+</html>

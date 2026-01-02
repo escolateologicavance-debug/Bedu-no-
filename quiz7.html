@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beduíno - Quiz 7</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%);
+            color: #f0ead6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .logo-top { width: 120px; margin-bottom: 20px; }
+        h2 { color: #d4a373; font-size: 1.4em; margin-bottom: 25px; }
+        .btn-opcao {
+            display: block; width: 100%; padding: 15px; margin: 12px 0;
+            background-color: #d4a373; color: #1e3f34; border: none;
+            border-radius: 12px; font-size: 1.1em; font-weight: bold; cursor: pointer;
+        }
+        .btn-opcao:hover { background-color: #e6b885; }
+        .feedback { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
+        #btn-proxima {
+            background-color: #5cb85c; color: white; padding: 15px;
+            border: none; border-radius: 12px; width: 100%;
+            margin-top: 20px; display: none; cursor: pointer; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <img src="logo-192.png" alt="Beduíno" class="logo-top">
+    
+    <div id="pergunta-box">
+        <h2 id="texto-pergunta">Carregando história dos Reis...</h2>
+        <div id="opcoes-box"></div>
+        <div id="feedback" class="feedback"></div>
+    </div>
+    <button id="btn-proxima" onclick="proximaPergunta()">PRÓXIMA PERGUNTA</button>
+</div>
+
+<script>
+    const perguntas = [
+        { q: "Quem foi o primeiro rei de Israel?", o: ["Davi", "Saul", "Salomão"], r: "Saul" },
+        { q: "Qual profeta ungiu Davi como rei?", o: ["Natã", "Samuel", "Elias"], r: "Samuel" },
+        { q: "Quem era o rei de Judá que viu o sol retroceder dez graus como sinal?", o: ["Ezequias", "Josias", "Acaz"], r: "Ezequias" },
+        { q: "Qual profeta foi alimentado por corvos?", o: ["Eliseu", "Elias", "Amós"], r: "Elias" },
+        { q: "Quem foi o rei que encontrou o Livro da Lei durante a reforma no Templo?", o: ["Josias", "Manassés", "Jeú"], r: "Josias" },
+        { q: "Qual profeta teve uma visão de um vale de ossos secos?", o: ["Jeremias", "Ezequiel", "Daniel"], r: "Ezequiel" },
+        { q: "Quem era o rei da Babilônia que teve o sonho da estátua?", o: ["Ciro", "Nabucodonosor", "Belsazar"], r: "Nabucodonosor" },
+        { q: "Qual profeta casou-se com Gomer por ordem de Deus?", o: ["Oseias", "Joel", "Malaquias"], r: "Oseias" },
+        { q: "Quem foi o sucessor do rei Davi?", o: ["Absalão", "Adonias", "Salomão"], r: "Salomão" },
+        { q: "Qual rainha má tentou exterminar todos os descendentes reais de Judá?", o: ["Jezabel", "Atalia", "Vasti"], r: "Atalia" },
+        { q: "Qual profeta confrontou o rei Acabe sobre a vinha de Nabote?", o: ["Elias", "Miqueias", "Obadias"], r: "Elias" },
+        { q: "Quem era o rei persa que permitiu o retorno dos judeus a Jerusalém?", o: ["Ciro", "Dário", "Xerxes"], r: "Ciro" },
+        { q: "Qual profeta foi levado em cativeiro para a Babilônia ainda jovem?", o: ["Habacuque", "Daniel", "Sofonias"], r: "Daniel" },
+        { q: "Quem foi o rei de Israel que ficou famoso pela sua rapidez ao conduzir carros?", o: ["Jeú", "Acazias", "Baasa"], r: "Jeú" },
+        { q: "Qual profeta orou e a terra ficou sem chuva por três anos e meio?", o: ["Eliseu", "Elias", "Jeremias"], r: "Elias" },
+        { q: "Quem era o rei de Judá que se tornou leproso por tentar queimar incenso no Templo?", o: ["Uzias", "Jotão", "Amós"], r: "Uzias" },
+        { q: "Qual profeta chorou sobre a destruição de Jerusalém?", o: ["Ezequiel", "Jeremias", "Isaías"], r: "Jeremias" },
+        { q: "Quem foi o último rei de Judá antes do exílio babilónico?", o: ["Joaquim", "Zedequias", "Jeoacaz"], r: "Zedequias" },
+        { q: "Qual profeta viu a glória do Senhor num trono alto e sublime?", o: ["Isaías", "Ageu", "Zacarias"], r: "Isaías" },
+        { q: "Quem era o rei que ofereceu mil holocaustos em Gibeão?", o: ["Davi", "Saul", "Salomão"], r: "Salomão" }
+    ];
+
+    let indice = 0;
+    function carregar() {
+        const item = perguntas[indice];
+        document.getElementById("texto-pergunta").innerText = item.q;
+        const box = document.getElementById("opcoes-box");
+        box.innerHTML = "";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("btn-proxima").style.display = "none";
+        item.o.forEach(opt => {
+            const b = document.createElement("button");
+            b.innerText = opt; b.className = "btn-opcao";
+            b.onclick = () => {
+                const btns = document.querySelectorAll(".btn-opcao");
+                btns.forEach(btn => btn.disabled = true);
+                if(opt === item.r) { 
+                    b.style.background = "#5cb85c"; 
+                    document.getElementById("feedback").innerText = "Correto! Fortalecendo o espírito."; 
+                }
+                else { 
+                    b.style.background = "#d9534f"; 
+                    document.getElementById("feedback").innerText = "Resposta: " + item.r; 
+                }
+                document.getElementById("btn-proxima").style.display = "block";
+            };
+            box.appendChild(b);
+        });
+    }
+    function proximaPergunta() {
+        indice++;
+        if(indice < perguntas.length) carregar();
+        else document.getElementById("pergunta-box").innerHTML = "<h2>Nível 7 Concluído!</h2><p>Você é um mestre das Escrituras.</p><a href='index.html' class='btn-opcao' style='text-decoration:none'>Voltar ao Início</a>";
+    }
+    carregar();
+</script>
+</body>
+</html>

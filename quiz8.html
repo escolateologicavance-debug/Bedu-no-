@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beduíno - Quiz 8</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%);
+            color: #f0ead6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .logo-top { width: 120px; margin-bottom: 20px; }
+        h2 { color: #d4a373; font-size: 1.4em; margin-bottom: 25px; }
+        .btn-opcao {
+            display: block; width: 100%; padding: 15px; margin: 12px 0;
+            background-color: #d4a373; color: #1e3f34; border: none;
+            border-radius: 12px; font-size: 1.1em; font-weight: bold; cursor: pointer;
+        }
+        .btn-opcao:hover { background-color: #e6b885; }
+        .feedback { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
+        #btn-proxima {
+            background-color: #5cb85c; color: white; padding: 15px;
+            border: none; border-radius: 12px; width: 100%;
+            margin-top: 20px; display: none; cursor: pointer; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <img src="logo-192.png" alt="Beduíno" class="logo-top">
+    
+    <div id="pergunta-box">
+        <h2 id="texto-pergunta">Carregando jornada feminina e fatos...</h2>
+        <div id="opcoes-box"></div>
+        <div id="feedback" class="feedback"></div>
+    </div>
+    <button id="btn-proxima" onclick="proximaPergunta()">PRÓXIMA PERGUNTA</button>
+</div>
+
+<script>
+    const perguntas = [
+        { q: "Quem foi a única mulher citada como juíza em Israel?", o: ["Rute", "Débora", "Ester"], r: "Débora" },
+        { q: "Qual o nome da rainha que arriscou a vida para salvar o povo judeu?", o: ["Vasti", "Ester", "Jezabel"], r: "Ester" },
+        { q: "Quem foi a mãe de João Batista?", o: ["Maria", "Isabel", "Ana"], r: "Isabel" },
+        { q: "Qual mulher se tornou uma estátua de sal ao olhar para trás?", o: ["Mulher de Ló", "Mulher de Noé", "Mulher de Jó"], r: "Mulher de Ló" },
+        { q: "Quem foi a sogra de Rute?", o: ["Orfa", "Noemi", "Sara"], r: "Noemi" },
+        { q: "Qual mulher ungiu os pés de Jesus com nardo puro e caríssimo?", o: ["Marta", "Maria de Betânia", "Maria Madalena"], r: "Maria de Betânia" },
+        { q: "Quem foi a mãe de Isaque?", o: ["Agar", "Sara", "Raquel"], r: "Sara" },
+        { q: "Qual o nome da profetisa que louvou a Deus ao ver o bebê Jesus no Templo?", o: ["Ana", "Miriã", "Hulda"], r: "Ana" },
+        { q: "Quem foi a irmã de Moisés e Arão?", o: ["Zípora", "Miriã", "Raabe"], r: "Miriã" },
+        { q: "Qual mulher foi ressuscitada por Pedro em Jope e era conhecida por fazer túnicas?", o: ["Dorcas", "Lídia", "Priscila"], r: "Dorcas" },
+        { q: "Quem foi a esposa de Áquila e cooperadora de Paulo?", o: ["Febe", "Priscila", "Eunice"], r: "Priscila" },
+        { q: "Qual mulher enganou Sansão para descobrir o segredo de sua força?", o: ["Dalila", "Mical", "Timna"], r: "Dalila" },
+        { q: "Quem era a avó de Timóteo, citada por Paulo por sua fé?", o: ["Eunice", "Lóide", "Cláudia"], r: "Lóide" },
+        { q: "Qual era o nome da esposa de Isaque?", o: ["Lia", "Rebeca", "Zilpa"], r: "Rebeca" },
+        { q: "Quem foi a mãe de Salomão?", o: ["Bate-Seba", "Abital", "Maaca"], r: "Bate-Seba" },
+        { q: "Qual mulher foi curada por Jesus de uma enfermidade que durava 12 anos?", o: ["A mulher encurvada", "A mulher com fluxo de sangue", "A filha de Jairo"], r: "A mulher com fluxo de sangue" },
+        { q: "Quem foi a rainha que desafiou o profeta Elias?", o: ["Atalia", "Jezabel", "Herodias"], r: "Jezabel" },
+        { q: "Qual mulher seguiu Noemi dizendo: 'O teu povo é o meu povo'?", o: ["Rute", "Orfa", "Penina"], r: "Rute" },
+        { q: "Quem foi a primeira mulher citada na Bíblia?", o: ["Eva", "Lilith", "Sara"], r: "Eva" },
+        { q: "Qual o nome da esposa de Moisés?", o: ["Zípora", "Miriã", "Lia"], r: "Zípora" }
+    ];
+
+    let indice = 0;
+    function carregar() {
+        const item = perguntas[indice];
+        document.getElementById("texto-pergunta").innerText = item.q;
+        const box = document.getElementById("opcoes-box");
+        box.innerHTML = "";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("btn-proxima").style.display = "none";
+        item.o.forEach(opt => {
+            const b = document.createElement("button");
+            b.innerText = opt; b.className = "btn-opcao";
+            b.onclick = () => {
+                const btns = document.querySelectorAll(".btn-opcao");
+                btns.forEach(btn => btn.disabled = true);
+                if(opt === item.r) { 
+                    b.style.background = "#5cb85c"; 
+                    document.getElementById("feedback").innerText = "Correto! Edificando o saber."; 
+                }
+                else { 
+                    b.style.background = "#d9534f"; 
+                    document.getElementById("feedback").innerText = "Resposta: " + item.r; 
+                }
+                document.getElementById("btn-proxima").style.display = "block";
+            };
+            box.appendChild(b);
+        });
+    }
+    function proximaPergunta() {
+        indice++;
+        if(indice < perguntas.length) carregar();
+        else document.getElementById("pergunta-box").innerHTML = "<h2>Nível 8 Concluído!</h2><p>Você honra a história bíblica.</p><a href='index.html' class='btn-opcao' style='text-decoration:none'>Voltar ao Início</a>";
+    }
+    carregar();
+</script>
+</body>
+</html>

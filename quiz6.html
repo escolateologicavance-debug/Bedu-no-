@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beduíno - Quiz 6</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%);
+            color: #f0ead6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .logo-top { width: 120px; margin-bottom: 20px; }
+        h2 { color: #d4a373; font-size: 1.4em; margin-bottom: 25px; }
+        .btn-opcao {
+            display: block; width: 100%; padding: 15px; margin: 12px 0;
+            background-color: #d4a373; color: #1e3f34; border: none;
+            border-radius: 12px; font-size: 1.1em; font-weight: bold; cursor: pointer;
+        }
+        .btn-opcao:hover { background-color: #e6b885; }
+        .feedback { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
+        #btn-proxima {
+            background-color: #5cb85c; color: white; padding: 15px;
+            border: none; border-radius: 12px; width: 100%;
+            margin-top: 20px; display: none; cursor: pointer; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <img src="logo-192.png" alt="Beduíno" class="logo-top">
+    
+    <div id="pergunta-box">
+        <h2 id="texto-pergunta">Carregando ensinamentos...</h2>
+        <div id="opcoes-box"></div>
+        <div id="feedback" class="feedback"></div>
+    </div>
+    <button id="btn-proxima" onclick="proximaPergunta()">PRÓXIMA PERGUNTA</button>
+</div>
+
+<script>
+    const perguntas = [
+        { q: "Na parábola do Semeador, o que representam os espinhos?", o: ["As perseguições", "As preocupações deste mundo", "A falta de entendimento"], r: "As preocupações deste mundo" },
+        { q: "O que o pastor faz ao encontrar a ovelha perdida?", o: ["A castiga", "Coloca-a nos ombros e se alegra", "Deixa-a no curral"], r: "Coloca-a nos ombros e se alegra" },
+        { q: "Qual a recomendação de Jesus sobre o perdão?", o: ["Perdoar 7 vezes", "Perdoar 70 vezes 7", "Perdoar 10 vezes"], r: "Perdoar 70 vezes 7" },
+        { q: "Na parábola dos Talentos, o que fez o servo que recebeu um talento?", o: ["Investiu", "Enterrou", "Deu aos pobres"], r: "Enterrou" },
+        { q: "Quem Jesus disse ser o 'Pão da Vida'?", o: ["Moisés", "Ele mesmo", "João Batista"], r: "Ele mesmo" },
+        { q: "Qual o maior mandamento segundo Jesus?", o: ["Não matar", "Amar a Deus sobre todas as coisas", "Guardar o sábado"], r: "Amar a Deus sobre todas as coisas" },
+        { q: "Na parábola da Dracma Perdida, o que a mulher faz?", o: ["Compra outra", "Acende a candeia e varre a casa", "Desiste de procurar"], r: "Acende a candeia e varre a casa" },
+        { q: "O que acontece com a casa edificada sobre a rocha?", o: ["Cai com a chuva", "Permanece firme", "É levada pelo vento"], r: "Permanece firme" },
+        { q: "Quem Jesus chamou de 'luz do mundo'?", o: ["Os anjos", "Seus discípulos", "Os profetas"], r: "Seus discípulos" },
+        { q: "Na parábola do Credor Incompassivo, quanto ele devia ao rei?", o: ["10 denários", "10 mil talentos", "100 moedas"], r: "10 mil talentos" },
+        { q: "O que Jesus disse sobre as crianças?", o: ["Que devem ficar longe", "Que delas é o Reino dos Céus", "Que precisam aprender silêncio"], r: "Que delas é o Reino dos Céus" },
+        { q: "Qual parábola ensina sobre a persistência na oração?", o: ["O Juiz Injusto", "O Rico e Lázaro", "A Rede"], r: "O Juiz Injusto" },
+        { q: "O que Jesus disse ser mais difícil que um camelo passar pelo fundo de uma agulha?", o: ["Um pobre ser feliz", "Um rico entrar no Reino de Deus", "Um pecador se arrepender"], r: "Um rico entrar no Reino de Deus" },
+        { q: "Na parábola do Joio e do Trigo, quem semeia o joio?", o: ["O dono da terra", "O inimigo", "Os trabalhadores"], r: "O inimigo" },
+        { q: "O que simboliza o fermento na parábola de Jesus?", o: ["O pecado", "O crescimento do Reino de Deus", "A corrupção"], r: "O crescimento do Reino de Deus" },
+        { q: "Quem Jesus disse que seriam os 'bem-aventurados' por serem pacíficos?", o: ["Os que herdarão a terra", "Os que serão chamados filhos de Deus", "Os que verão a Deus"], r: "Os que serão chamados filhos de Deus" },
+        { q: "Na parábola da Grande Ceia, o que os convidados fizeram?", o: ["Compareceram todos", "Daram desculpas para não ir", "Levaram presentes"], r: "Daram desculpas para não ir" },
+        { q: "O que Jesus ensinou sobre julgar os outros?", o: ["Que devemos julgar sempre", "Não julgueis para não serdes julgados", "Julgar apenas os amigos"], r: "Não julgueis para não serdes julgados" },
+        { q: "Na parábola da Videira Verdadeira, quem é o agricultor?", o: ["Jesus", "O Pai", "Os apóstolos"], r: "O Pai" },
+        { q: "O que acontece com o sal que perde o sabor?", o: ["É temperado novamente", "Para nada mais presta senão para ser lançado fora", "Fica guardado"], r: "Para nada mais presta senão para ser lançado fora" }
+    ];
+
+    let indice = 0;
+    function carregar() {
+        const item = perguntas[indice];
+        document.getElementById("texto-pergunta").innerText = item.q;
+        const box = document.getElementById("opcoes-box");
+        box.innerHTML = "";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("btn-proxima").style.display = "none";
+        item.o.forEach(opt => {
+            const b = document.createElement("button");
+            b.innerText = opt; b.className = "btn-opcao";
+            b.onclick = () => {
+                const btns = document.querySelectorAll(".btn-opcao");
+                btns.forEach(btn => btn.disabled = true);
+                if(opt === item.r) { 
+                    b.style.background = "#5cb85c"; 
+                    document.getElementById("feedback").innerText = "Correto! Qualificando o estar."; 
+                }
+                else { 
+                    b.style.background = "#d9534f"; 
+                    document.getElementById("feedback").innerText = "Resposta: " + item.r; 
+                }
+                document.getElementById("btn-proxima").style.display = "block";
+            };
+            box.appendChild(b);
+        });
+    }
+    function proximaPergunta() {
+        indice++;
+        if(indice < perguntas.length) carregar();
+        else document.getElementById("pergunta-box").innerHTML = "<h2>Nível 6 Finalizado!</h2><p>Sua jornada continua firme.</p><a href='index.html' class='btn-opcao' style='text-decoration:none'>Voltar ao Início</a>";
+    }
+    carregar();
+</script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beduíno - Quiz</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%);
+            color: #f0ead6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .logo-top {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        h2 { color: #d4a373; font-size: 1.4em; margin-bottom: 25px; }
+        .btn-opcao {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            background-color: #d4a373;
+            color: #1e3f34;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-opcao:hover { background-color: #e6b885; }
+        .feedback { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
+        #btn-proxima {
+            background-color: #5cb85c;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            width: 100%;
+            margin-top: 20px;
+            display: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <img src="logo-192.png" alt="Beduíno" class="logo-top">
+    
+    <div id="pergunta-box">
+        <h2 id="texto-pergunta">Carregando pergunta...</h2>
+        <div id="opcoes-box"></div>
+        <div id="feedback" class="feedback"></div>
+    </div>
+    
+    <button id="btn-proxima" onclick="proximaPergunta()">PRÓXIMA PERGUNTA</button>
+</div>
+
+<script>
+    const perguntas = [
+        { q: "Quem foi o primeiro homem criado por Deus?", o: ["Noé", "Adão", "Abraão"], r: "Adão" },
+        { q: "Quem construiu a arca para o dilúvio?", o: ["Moisés", "Noé", "Ló"], r: "Noé" },
+        { q: "Quem derrotou o gigante Golias?", o: ["Saul", "Davi", "Salomão"], r: "Davi" },
+        { q: "Quem abriu o Mar Vermelho?", o: ["Josué", "Moisés", "Arão"], r: "Moisés" },
+        { q: "Quantas pragas caíram sobre o Egito?", o: ["7", "12", "10"], r: "10" },
+        { q: "Quem foi vendido pelos irmãos como escravo?", o: ["José", "Benjamim", "Judá"], r: "José" },
+        { q: "Quem foi jogado na cova dos leões?", o: ["Daniel", "Samuel", "Esdras"], r: "Daniel" },
+        { q: "Quem foi o homem mais sábio da Bíblia?", o: ["Davi", "Salomão", "Samuel"], r: "Salomão" },
+        { q: "Em qual cidade Jesus nasceu?", o: ["Nazaré", "Belém", "Jerusalém"], r: "Belém" },
+        { q: "Qual o primeiro livro da Bíblia?", o: ["Êxodo", "Gênesis", "Mateus"], r: "Gênesis" },
+        { q: "Quem foi engolido por um grande peixe?", o: ["Elias", "Jonas", "Eliseu"], r: "Jonas" },
+        { q: "Qual o último livro da Bíblia?", o: ["Apocalipse", "Judas", "Malaquias"], r: "Apocalipse" },
+        { q: "Quem batizou Jesus?", o: ["Pedro", "João Batista", "André"], r: "João Batista" },
+        { q: "Quem traiu Jesus por 30 moedas?", o: ["Pedro", "Judas Iscariotes", "Tomé"], r: "Judas Iscariotes" },
+        { q: "Qual era a profissão de Jesus?", o: ["Pescador", "Carpinteiro", "Pastor"], r: "Carpinteiro" },
+        { q: "Quem negou Jesus três vezes?", o: ["João", "Pedro", "Judas"], r: "Pedro" },
+        { q: "Quem ressuscitou Lázaro?", o: ["Pedro", "Paulo", "Jesus"], r: "Jesus" },
+        { q: "Quem viu a escada que ia até o céu?", o: ["Abraão", "Jacó", "Isaque"], r: "Jacó" },
+        { q: "Qual o nome da esposa de Adão?", o: ["Eva", "Sara", "Raquel"], r: "Eva" },
+        { q: "Quem foi o sucessor de Moisés?", o: ["Calebe", "Josué", "Gideão"], r: "Josué" }
+    ];
+
+    let indice = 0;
+
+    function carregar() {
+        const item = perguntas[indice];
+        document.getElementById("texto-pergunta").innerText = item.q;
+        const box = document.getElementById("opcoes-box");
+        box.innerHTML = "";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("btn-proxima").style.display = "none";
+
+        item.o.forEach(opt => {
+            const b = document.createElement("button");
+            b.innerText = opt;
+            b.className = "btn-opcao";
+            b.onclick = () => {
+                const botoes = document.querySelectorAll(".btn-opcao");
+                botoes.forEach(btn => btn.disabled = true);
+                if(opt === item.r) {
+                    b.style.background = "#5cb85c";
+                    document.getElementById("feedback").innerText = "Correto!";
+                } else {
+                    b.style.background = "#d9534f";
+                    document.getElementById("feedback").innerText = "Resposta: " + item.r;
+                }
+                document.getElementById("btn-proxima").style.display = "block";
+            };
+            box.appendChild(b);
+        });
+    }
+
+    function proximaPergunta() {
+        indice++;
+        if(indice < perguntas.length) carregar();
+        else document.getElementById("pergunta-box").innerHTML = "<h2>Jornada Concluída!</h2><a href='index.html' class='btn-opcao'>Voltar ao Início</a>";
+    }
+
+    carregar();
+</script>
+</body>
+</html>

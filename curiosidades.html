@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beduíno - Curiosidades e Desafio</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%);
+            color: #f0ead6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%;
+            max-width: 600px;
+            text-align: left;
+        }
+        .logo-top { display: block; width: 100px; margin: 0 auto 20px; }
+        h1 { color: #d4a373; text-align: center; font-size: 1.8em; }
+        h2 { color: #d4a373; border-bottom: 1px solid #d4a373; padding-bottom: 5px; margin-top: 30px; }
+        p { line-height: 1.6; margin-bottom: 15px; text-align: justify; }
+        .highlight { color: #5cb85c; font-weight: bold; }
+        
+        /* Palavras Cruzadas */
+        .crossword-container { margin-top: 40px; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(10, 30px); gap: 2px; justify-content: center; margin-bottom: 20px; }
+        .cell { width: 30px; height: 30px; background: #1e3f34; border: 1px solid #d4a373; color: white; text-align: center; font-weight: bold; text-transform: uppercase; }
+        .cell.black { background: #000; border: none; }
+        .tips { text-align: left; font-size: 0.9em; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; }
+        
+        .btn-voltar {
+            display: block; width: 100%; padding: 15px; margin-top: 30px;
+            background-color: #d4a373; color: #1e3f34; border: none;
+            border-radius: 12px; font-size: 1.1em; font-weight: bold; cursor: pointer;
+            text-decoration: none; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src=logo-192.png" alt="Beduíno" class="logo-top">
+    <h1>Jornada de Conhecimento</h1>
+
+    <h2>Você Sabia?</h2>
+    <p>A Bíblia foi o <b>primeiro livro impresso</b> por Johannes Gutenberg em 1455. Ela detém os recordes mundiais de livro mais editado, mais vendido, mais traduzido e mais lido de toda a história da humanidade.</p>
+
+    <h2>A Janela 10x40</h2>
+    <p>É uma faixa geográfica que se estende do Oeste da África até o Leste da Ásia (entre os graus 10 e 40 ao norte do Equador). É onde vive a maior parte dos povos não alcançados pelo cristianismo, concentrando as maiores carências sociais e espirituais do planeta.</p>
+
+    <h2>O que muitos acham, mas não está escrito</h2>
+    <p>Frases populares como <i>"Faça a sua parte que eu te ajudarei"</i> ou <i>"Quem não vem pelo amor, vem pela dor"</i> <b>não constam na Bíblia</b>. O texto bíblico foca na graça e na soberania de Deus, não em um sistema de trocas meritocráticas.</p>
+
+    <h2>Olhai para a Mulher de Ló</h2>
+    <p>Jesus deu uma ordem intrigante: <i>"Lembrai-vos da mulher de Ló"</i> (Lucas 17:32). Por que olhar para uma anônima que virou sal? Porque ela representa o perigo de ter o corpo fora de Sodoma, mas o <b>coração ainda preso ao passado</b>. É um alerta sobre a "Qualificação do Estar" presente.</p>
+
+    <h2>Curiosidades Físicas e Biológicas</h2>
+    <p><b>Mar Morto:</b> Localizado a cerca de 430 metros abaixo do nível do mar, é o ponto mais baixo da terra firme. Suas águas têm 34% de salinidade (10x mais que os oceanos). (Fonte: Israel Geological Survey).</p>
+    <p><b>Rio Jordão:</b> Seu nome significa "aquele que desce". Ele nasce no Monte Hermon e deságua no Mar Morto, serpenteando por uma fenda geológica única no mundo.</p>
+
+    <h2>Estereótipo e Genética de Jesus</h2>
+    <p>Diferente do estereótipo europeu comum, a linhagem de Jesus é rica. Ele é descendente de Rute (Moabita) e Boaz. Seu ancestral Davi é descrito em <b>1 Samuel 16:12</b> como <i>"ruivo e de formoso aspecto"</i>. Biologicamente, a mistura étnica permite traços claros e ruivos. <b>Gilberto Moreira</b> concorda serenamente com este entendimento histórico-biológico.</p>
+
+    <div class="crossword-container">
+        <h2>Desafio: Palavras Cruzadas</h2>
+        <div class="grid" id="grid">
+            </div>
+        <div class="tips">
+            <b>Horizontais:</b><br>
+            1. Primeiro homem (4 letras)<br>
+            2. Construiu a arca (3 letras)<br><br>
+            <b>Verticais:</b><br>
+            1. Onde Jesus nasceu (5 letras)
+        </div>
+    </div>
+
+    <a href="index.html" class="btn-voltar">VOLTAR AO INÍCIO</a>
+</div>
+
+<script>
+    // Exemplo simplificado de grid (A-D-A-O / N-O-E)
+    const gridData = [
+        ['A','D','A','O',' ',' ',' ',' ',' ',' '],
+        ['B',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+        ['E',' ','N','O','E',' ',' ',' ',' ',' '],
+        ['L',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+        ['E',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+        ['M',' ',' ',' ',' ',' ',' ',' ',' ',' ']
+    ];
+
+    const gridEl = document.getElementById('grid');
+    gridData.forEach(row => {
+        row.forEach(char => {
+            const cell = document.createElement('div');
+            cell.className = char === ' ' ? 'cell black' : 'cell';
+            cell.innerText = char === ' ' ? '' : char;
+            gridEl.appendChild(cell);
+        });
+    });
+</script>
+</body>
+</html>
