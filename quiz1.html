@@ -43,6 +43,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
+            text-decoration: none;
         }
         .btn-opcao:hover { background-color: #e6b885; }
         .feedback { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
@@ -130,18 +131,21 @@
 
     function proximaPergunta() {
         indice++;
-        if(indice < perguntas.length) carregar();
-     else {
-    document.getElementById("pergunta-box").innerHTML = `
-        <h2>Jornada Concluída!</h2>
-        <a href="index.html" class="btn-opcao" style="text-decoration:none; display:block; margin-bottom:10px;">Voltar ao Início</a>
-        <a href="quiz2.html" style="text-decoration:none;">
-            <button class="btn-proxima" style="background-color:#28a745; color:white; border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold;">PRÓXIMA PERGUNTA</button>
-        </a>`;
-}
-
+        if(indice < perguntas.length) {
+            carregar();
+        } else {
+            document.getElementById("btn-proxima").style.display = "none";
+            document.getElementById("pergunta-box").innerHTML = `
+                <h2>Jornada Concluída!</h2>
+                <a href="index.html" class="btn-opcao" style="text-decoration:none;">Voltar ao Início</a>
+                <a href="quiz2.html" style="text-decoration:none;">
+                    <button style="background-color:#5cb85c; color:white; padding:15px; border:none; border-radius:12px; width:100%; margin-top:10px; cursor:pointer; font-weight:bold;">PRÓXIMA PERGUNTA</button>
+                </a>`;
+        }
+    }
 
     carregar();
 </script>
 </body>
 </html>
+  
