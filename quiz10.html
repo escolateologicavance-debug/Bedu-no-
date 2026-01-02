@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beduíno - Quiz 10</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%);
+            color: #f0ead6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .logo-top { width: 120px; margin-bottom: 20px; }
+        h2 { color: #d4a373; font-size: 1.4em; margin-bottom: 25px; }
+        .btn-opcao {
+            display: block; width: 100%; padding: 15px; margin: 12px 0;
+            background-color: #d4a373; color: #1e3f34; border: none;
+            border-radius: 12px; font-size: 1.1em; font-weight: bold; cursor: pointer;
+        }
+        .btn-opcao:hover { background-color: #e6b885; }
+        .feedback { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
+        #btn-proxima {
+            background-color: #5cb85c; color: white; padding: 15px;
+            border: none; border-radius: 12px; width: 100%;
+            margin-top: 20px; display: none; cursor: pointer; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <img src="assets/logo-192.png" alt="Beduíno" class="logo-top">
+    
+    <div id="pergunta-box">
+        <h2 id="texto-pergunta">Carregando revelações...</h2>
+        <div id="opcoes-box"></div>
+        <div id="feedback" class="feedback"></div>
+    </div>
+    <button id="btn-proxima" onclick="proximaPergunta()">PRÓXIMA PERGUNTA</button>
+</div>
+
+<script>
+    const perguntas = [
+        { q: "Quem escreveu o livro do Apocalipse?", o: ["Paulo", "Pedro", "João"], r: "João" },
+        { q: "Qual o livro da Bíblia que fala sobre a armadura de Deus?", o: ["Romanos", "Efésios", "Colossenses"], r: "Efésios" },
+        { q: "Segundo Hebreus, a fé é o firme fundamento das coisas que se...", o: ["Vêem", "Esperam", "Sentem"], r: "Esperam" },
+        { q: "Quantos cavaleiros são mencionados no Apocalipse?", o: ["4", "7", "12"], r: "4" },
+        { q: "Quem escreveu a carta aos Romanos?", o: ["Tiago", "Paulo", "Lucas"], r: "Paulo" },
+        { q: "Qual apóstolo escreveu sobre a 'língua' ser um pequeno fogo?", o: ["João", "Tiago", "Pedro"], r: "Tiago" },
+        { q: "No Apocalipse, Jesus é chamado de a Estrela da...", o: ["Noite", "Manhã", "Paz"], r: "Manhã" },
+        { q: "Qual carta fala que 'Deus é amor'?", o: ["1 João", "Gálatas", "Filipenses"], r: "1 João" },
+        { q: "Onde se encontra a frase 'Tudo posso naquele que me fortalece'?", o: ["2 Coríntios", "Filipenses", "1 Timóteo"], r: "Filipenses" },
+        { q: "Quem Paulo chamou de 'meu verdadeiro filho na fé'?", o: ["Timóteo", "Tito", "Silas"], r: "Timóteo" },
+        { q: "Qual o último livro do Novo Testamento antes do Apocalipse?", o: ["Judas", "3 João", "Hebreus"], r: "Judas" },
+        { q: "No Apocalipse, qual a cor do cavalo que simboliza a morte?", o: ["Preto", "Amarelo/Pálido", "Vermelho"], r: "Amarelo/Pálido" },
+        { q: "Quem escreveu a carta a Filemom?", o: ["Pedro", "Paulo", "Tiago"], r: "Paulo" },
+        { q: "O que João viu descer do céu no final do Apocalipse?", o: ["Um grande exército", "A Nova Jerusalém", "Uma arca"], r: "A Nova Jerusalém" },
+        { q: "Qual o nome do escravo por quem Paulo intercedeu na carta a Filemom?", o: ["Onésimo", "Tíquico", "Epafrodito"], r: "Onésimo" },
+        { q: "Segundo 1 Coríntios 13, qual é o maior: a fé, a esperança ou o amor?", o: ["A fé", "O amor", "A esperança"], r: "O amor" },
+        { q: "Como Jesus é chamado no Apocalipse em relação ao alfabeto grego?", o: ["Alfa e Ômega", "Delta e Sigma", "Zeta e Pi"], r: "Alfa e Ômega" },
+        { q: "Quantos anciãos João viu ao redor do trono de Deus?", o: ["12", "24", "40"], r: "24" },
+        { q: "Em qual carta Paulo fala sobre o 'espinho na carne'?", o: ["Gálatas", "2 Coríntios", "1 Tessalonicenses"], r: "2 Coríntios" },
+        { q: "Qual o nome do rio da água da vida que João viu no Apocalipse?", o: ["Rio Jordão", "Rio da Vida", "Rio Eufrates"], r: "Rio da Vida" }
+    ];
+
+    let indice = 0;
+    function carregar() {
+        const item = perguntas[indice];
+        document.getElementById("texto-pergunta").innerText = item.q;
+        const box = document.getElementById("opcoes-box");
+        box.innerHTML = "";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("btn-proxima").style.display = "none";
+        item.o.forEach(opt => {
+            const b = document.createElement("button");
+            b.innerText = opt; b.className = "btn-opcao";
+            b.onclick = () => {
+                const btns = document.querySelectorAll(".btn-opcao");
+                btns.forEach(btn => btn.disabled = true);
+                if(opt === item.r) { 
+                    b.style.background = "#5cb85c"; 
+                    document.getElementById("feedback").innerText = "Correto! Estar qualificado é o segredo."; 
+                }
+                else { 
+                    b.style.background = "#d9534f"; 
+                    document.getElementById("feedback").innerText = "Resposta: " + item.r; 
+                }
+                document.getElementById("btn-proxima").style.display = "block";
+            };
+            box.appendChild(b);
+        });
+    }
+    function proximaPergunta() {
+        indice++;
+        if(indice < perguntas.length) carregar();
+        else document.getElementById("pergunta-box").innerHTML = "<h2>Jornada Completa!</h2><p>Você concluiu as 200 perguntas do Beduíno.</p><a href='curiosidades.html' class='btn-opcao' style='text-decoration:none'>VER CURIOSIDADES E DESAFIOS</a>";
+
+    }
+    carregar();
+</script>
+</body>
+</html>

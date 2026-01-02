@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beduíno - Quiz 4</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%);
+            color: #f0ead6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .logo-top { width: 120px; margin-bottom: 20px; }
+        h2 { color: #d4a373; font-size: 1.4em; margin-bottom: 25px; }
+        .btn-opcao {
+            display: block; width: 100%; padding: 15px; margin: 12px 0;
+            background-color: #d4a373; color: #1e3f34; border: none;
+            border-radius: 12px; font-size: 1.1em; font-weight: bold; cursor: pointer;
+        }
+        .btn-opcao:hover { background-color: #e6b885; }
+        .feedback { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
+        #btn-proxima {
+            background-color: #5cb85c; color: white; padding: 15px;
+            border: none; border-radius: 12px; width: 100%;
+            margin-top: 20px; display: none; cursor: pointer; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <img src="assets/logo-192.png" alt="Beduíno" class="logo-top">
+    
+    <div id="pergunta-box">
+        <h2 id="texto-pergunta">Carregando...</h2>
+        <div id="opcoes-box"></div>
+        <div id="feedback" class="feedback"></div>
+    </div>
+    <button id="btn-proxima" onclick="proximaPergunta()">PRÓXIMA PERGUNTA</button>
+</div>
+
+<script>
+    const perguntas = [
+        { q: "Qual o primeiro milagre de Jesus registrado no Evangelho de João?", o: ["Cura de um cego", "Transformação de água em vinho", "Multiplicação dos pães"], r: "Transformação de água em vinho" },
+        { q: "Na parábola do Filho Pródigo, o que o pai deu ao filho quando ele voltou?", o: ["Uma bronca", "Um anel e uma túnica", "Apenas comida"], r: "Um anel e uma túnica" },
+        { q: "Qual a menor semente que Jesus comparou ao Reino de Deus?", o: ["Semente de uva", "Grão de mostarda", "Semente de trigo"], r: "Grão de mostarda" },
+        { q: "Quem subiu no telhado para descer um paralítico até Jesus?", o: ["Seus quatro amigos", "Sua família", "Os discípulos"], r: "Seus quatro amigos" },
+        { q: "Para onde Jesus enviou os demônios chamados Legião?", o: ["Para o mar", "Para uma manada de porcos", "Para o deserto"], r: "Para uma manada de porcos" },
+        { q: "O que Pedro encontrou na boca de um peixe para pagar o imposto?", o: ["Uma pérola", "Uma moeda", "Uma joia"], r: "Uma moeda" },
+        { q: "Qual o nome do homem que Jesus ressuscitou após quatro dias morto?", o: ["Lázaro", "Estêvão", "Cornélio"], r: "Lázaro" },
+        { q: "Na parábola do Bom Samaritano, quem passou primeiro e não ajudou?", o: ["Um soldado", "Um sacerdote", "Um comerciante"], r: "Um sacerdote" },
+        { q: "Quantas virgens eram prudentes na parábola das dez virgens?", o: ["3", "5", "7"], r: "5" },
+        { q: "Qual milagre Jesus realizou para acalmar os discípulos no mar?", o: ["Pesca maravilhosa", "Acalmou a tempestade", "Multiplicação dos peixes"], r: "Acalmou a tempestade" },
+        { q: "Quem era o cego de Jericó que gritou por Jesus?", o: ["Bartimeu", "Zaqueu", "Nicodemos"], r: "Bartimeu" },
+        { q: "O que caiu dos olhos de Saulo quando ele recuperou a visão?", o: ["Lágrimas", "Escamas", "Areia"], r: "Escamas" },
+        { q: "Qual o nome da mulher que tocou na orla do manto de Jesus e foi curada?", o: ["Maria", "A mulher com fluxo de sangue", "Marta"], r: "A mulher com fluxo de sangue" },
+        { q: "Quantos cestos sobraram na multiplicação dos cinco pães e dois peixes?", o: ["12", "7", "3"], r: "12" },
+        { q: "Em que dia da semana Jesus costumava curar, irritando os fariseus?", o: ["Domingo", "Sábado", "Sexta-feira"], r: "Sábado" },
+        { q: "O que Jesus usou para curar um cego de nascença?", o: ["Apenas palavras", "Lodo feito com saliva", "Água benta"], r: "Lodo feito com saliva" },
+        { q: "Qual parábola fala sobre o semeador e diferentes tipos de solo?", o: ["Parábola do Semeador", "Parábola do Trigo", "Parábola da Videira"], r: "Parábola do Semeador" },
+        { q: "Quem foi a pessoa que Jesus curou da febre na casa de Pedro?", o: ["A filha de Pedro", "A sogra de Pedro", "A esposa de Pedro"], r: "A sogra de Pedro" },
+        { q: "O que aconteceu com a figueira que Jesus amaldiçoou por não ter frutos?", o: ["Cresceu mais", "Secou imediatamente", "Deu frutos no dia seguinte"], r: "Secou imediatamente" },
+        { q: "Quem Jesus ajudou na pesca maravilhosa após uma noite sem nada pescar?", o: ["João e Tiago", "Pedro e seus companheiros", "André"], r: "Pedro e seus companheiros" }
+    ];
+
+    let indice = 0;
+    function carregar() {
+        const item = perguntas[indice];
+        document.getElementById("texto-pergunta").innerText = item.q;
+        const box = document.getElementById("opcoes-box");
+        box.innerHTML = "";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("btn-proxima").style.display = "none";
+        item.o.forEach(opt => {
+            const b = document.createElement("button");
+            b.innerText = opt; b.className = "btn-opcao";
+            b.onclick = () => {
+                const btns = document.querySelectorAll(".btn-opcao");
+                btns.forEach(btn => btn.disabled = true);
+                if(opt === item.r) { 
+                    b.style.background = "#5cb85c"; 
+                    document.getElementById("feedback").innerText = "Correto! O milagre acontece no 'estar'."; 
+                }
+                else { 
+                    b.style.background = "#d9534f"; 
+                    document.getElementById("feedback").innerText = "Resposta: " + item.r; 
+                }
+                document.getElementById("btn-proxima").style.display = "block";
+            };
+            box.appendChild(b);
+        });
+    }
+    function proximaPergunta() {
+        indice++;
+        if(indice < perguntas.length) carregar();
+        else document.getElementById("pergunta-box").innerHTML = "<h2>Milagres Concluídos!</h2><p>Continue sua jornada de fé.</p><a href='index.html' class='btn-opcao' style='text-decoration:none'>Voltar ao Início</a>";
+    }
+    carregar();
+</script>
+</body>
+</html>

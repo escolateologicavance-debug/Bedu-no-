@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beduíno - Quiz 2</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%);
+            color: #f0ead6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .logo-top {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        h2 { color: #d4a373; font-size: 1.4em; margin-bottom: 25px; }
+        .btn-opcao {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            background-color: #d4a373;
+            color: #1e3f34;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-opcao:hover { background-color: #e6b885; }
+        .feedback { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
+        #btn-proxima {
+            background-color: #5cb85c;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            width: 100%;
+            margin-top: 20px;
+            display: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <img src="assets/logo-192.png" alt="Beduíno" class="logo-top">
+    
+    <div id="pergunta-box">
+        <h2 id="texto-pergunta">Carregando jornada...</h2>
+        <div id="opcoes-box"></div>
+        <div id="feedback" class="feedback"></div>
+    </div>
+    
+    <button id="btn-proxima" onclick="proximaPergunta()">PRÓXIMA PERGUNTA</button>
+</div>
+
+<script>
+    const perguntas = [
+        { q: "Qual o nome da cidade cujos muros caíram após o povo rodear por 7 dias?", o: ["Jerusalém", "Jericó", "Babilônia"], r: "Jericó" },
+        { q: "Quem foi a mulher que escondeu os espias em Jericó?", o: ["Raabe", "Rute", "Ester"], r: "Raabe" },
+        { q: "Qual o nome do mar onde Jesus caminhou sobre as águas?", o: ["Mar Morto", "Mar da Galileia", "Mar Vermelho"], r: "Mar da Galileia" },
+        { q: "Quem foi o profeta que desafiou os profetas de Baal no Monte Carmelo?", o: ["Eliseu", "Elias", "Isaías"], r: "Elias" },
+        { q: "Qual o nome do jardim onde Jesus orou antes de ser preso?", o: ["Getsêmani", "Éden", "Gibeão"], r: "Getsêmani" },
+        { q: "Quem foi a sogra de Rute?", o: ["Noemi", "Sara", "Ana"], r: "Noemi" },
+        { q: "Quantos pães e peixes Jesus usou para alimentar a multidão?", o: ["7 pães e 2 peixes", "5 pães e 2 peixes", "12 pães e 3 peixes"], r: "5 pães e 2 peixes" },
+        { q: "Quem escreveu a maioria das cartas (epístolas) do Novo Testamento?", o: ["Pedro", "João", "Paulo"], r: "Paulo" },
+        { q: "Qual discípulo era cobrador de impostos antes de seguir Jesus?", o: ["Mateus", "Marcos", "Lucas"], r: "Mateus" },
+        { q: "Quem era o rei de Israel quando Davi o derrotou no espírito de serviço?", o: ["Saul", "Salomão", "Herodes"], r: "Saul" },
+        { q: "Qual profeta foi levado por uma carruagem de fogo?", o: ["Enoque", "Elias", "Moisés"], r: "Elias" },
+        { q: "Quem foi o companheiro de Paulo nas prisões em Filipos?", o: ["Silas", "Barnabé", "Timóteo"], r: "Silas" },
+        { q: "Qual o nome do monte onde Moisés recebeu os Dez Mandamentos?", o: ["Monte das Oliveiras", "Monte Sinai", "Monte Nebo"], r: "Monte Sinai" },
+        { q: "Quem era o imperador romano quando Jesus nasceu?", o: ["Nero", "César Augusto", "Pôncio Pilatos"], r: "César Augusto" },
+        { q: "Quantos anos o povo de Israel peregrinou no deserto?", o: ["7 anos", "40 anos", "100 anos"], r: "40 anos" },
+        { q: "Quem reconheceu Jesus como o Messias quando Ele ainda era bebê no Templo?", o: ["Simeão", "Nicodemos", "Caifás"], r: "Simeão" },
+        { q: "Qual o nome da montanha onde a Arca de Noé repousou?", o: ["Monte Sinai", "Monte Ararat", "Monte Moriá"], r: "Monte Ararat" },
+        { q: "Quem foi a mãe de Samuel, que orou fervorosamente ao Senhor?", o: ["Ana", "Isabel", "Marta"], r: "Ana" },
+        { q: "O que significa 'Emanuel'?", o: ["Deus é Amor", "Deus conosco", "Deus é Santo"], r: "Deus conosco" },
+        { q: "Quem foi o apóstolo que pregou no dia de Pentecostes?", o: ["Tiago", "João", "Pedro"], r: "Pedro" }
+    ];
+
+    let indice = 0;
+
+    function carregar() {
+        const item = perguntas[indice];
+        document.getElementById("texto-pergunta").innerText = item.q;
+        const box = document.getElementById("opcoes-box");
+        box.innerHTML = "";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("btn-proxima").style.display = "none";
+
+        item.o.forEach(opt => {
+            const b = document.createElement("button");
+            b.innerText = opt;
+            b.className = "btn-opcao";
+            b.onclick = () => {
+                const botoes = document.querySelectorAll(".btn-opcao");
+                botoes.forEach(btn => btn.disabled = true);
+                if(opt === item.r) {
+                    b.style.background = "#5cb85c";
+                    document.getElementById("feedback").innerText = "Correto! Siga na luz.";
+                } else {
+                    b.style.background = "#d9534f";
+                    document.getElementById("feedback").innerText = "Resposta certa: " + item.r;
+                }
+                document.getElementById("btn-proxima").style.display = "block";
+            };
+            box.appendChild(b);
+        });
+    }
+
+    function proximaPergunta() {
+        indice++;
+        if(indice < perguntas.length) carregar();
+        else document.getElementById("pergunta-box").innerHTML = "<h2>Etapa Concluída!</h2><p>Seu conhecimento está sendo qualificado.</p><a href='quiz3.html' class='btn-opcao' style='text-decoration:none'>Ir para o Quiz 3</a>";
+    }
+
+    carregar();
+</script>
+</body>
+</html>
