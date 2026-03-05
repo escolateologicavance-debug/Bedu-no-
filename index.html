@@ -8,7 +8,6 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Gradiente que remete ao deserto à noite, condizente com o tema teísta */
             background: linear-gradient(135deg, #2d4f44 0%, #162d26 100%); 
             display: flex;
             justify-content: center;
@@ -28,18 +27,20 @@
             width: 90%;
         }
 
-        /* Configuração da logo conforme sua solicitação */
+        /* Configuração da logo ajustada */
         .logo {
-            width: 192px; /* Tamanho 192px solicitado */
+            width: 192px;
+            max-width: 100%;
             height: auto;
-            margin-bottom: 25px;
+            margin: 0 auto 25px auto;
+            display: block;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
         }
 
         h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
-            color: #d4a373; /* Tom areia/dourado */
+            color: #d4a373;
             letter-spacing: 3px;
             text-transform: uppercase;
         }
@@ -76,16 +77,14 @@
 <body>
 
     <div class="container">
-<img src="logo-192.png" alt="Beduíno" class="logo-top">
-
+        <img src="logo-192.png" alt="Beduíno" class="logo">
         
-      <h1>Beduíno</h1>
-<p style="color: #d4a373; font-weight: bold; margin-top: -15px; margin-bottom: 20px;">Gilberto Moreira</p>
-<p>Explore as Escrituras em uma jornada de fé e conhecimento.</p>
+        <h1>Beduíno</h1>
+        <p style="color: #d4a373; font-weight: bold; margin-top: -15px; margin-bottom: 20px;">Gilberto Moreira</p>
+        <p>Explore as Escrituras em uma jornada de fé e conhecimento.</p>
 
         <a href="quiz1.html" class="start-button">INICIAR JORNADA</a>
     </div>
 
 </body>
 </html>
-
