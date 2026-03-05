@@ -1,4 +1,4 @@
-const CACHE_NAME = 'beduino-v1';
+const CACHE_NAME = 'beduino-v2'; // Mudei para v2 para forçar o navegador a atualizar
 const assets = [
   './',
   './index.html',
@@ -12,9 +12,8 @@ const assets = [
   './quiz8.html',
   './quiz9.html',
   './quiz10.html',
-  '.logo-192.png',
-'./curiosidades.html'
-
+  './logo-192.png',
+  './curiosidades.html'
 ];
 
 self.addEventListener('install', event => {
